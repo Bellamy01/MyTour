@@ -5,9 +5,11 @@ const app = express();
 
 app.use(express.json());   
 
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`,"utf-8"))
+const tours = JSON.parse(
+    fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`,"utf-8")
+);
 
-app.get('/api/v1/tours',(req,res)=>{
+const getAllTours = (req,res)=>{
     res
     .status(200)
     .json({
@@ -17,10 +19,9 @@ app.get('/api/v1/tours',(req,res)=>{
             tours
         }
     });
+}
 
-})
-
-app.get(`/api/v1/tours/:id`,(req,res)=>{
+const getTour = (req,res)=>{
     const id = parseInt(req.params.id);
     const tour = tours.find(el=>el.id == req.params.id);
 
@@ -28,15 +29,18 @@ app.get(`/api/v1/tours/:id`,(req,res)=>{
         return res.status(404).json({
             status:'failure',
             message:'Invalid ID'
-        })
+        });
     }
     res.status(200).json({
         status:'success',
         data:{
             tour
         }
-    })
-})
+    });
+}
+app.get('/api/v1/tours',getAllTours);
+
+app.get(`/api/v1/tours/:id`,getTour);
 
 app.post('/api/v1/tours',(req,res)=>{
     const newId = tours[tours.length-1].id +1;
@@ -77,7 +81,7 @@ app.patch('/api/v1/tours/:id',(req,res)=>{
 app.delete('/api/v1/tours/:id',(req,res)=>{
     const id = parseInt(req.params.id);
     const tour = tours.find(el=>el.id == req.params.id);
-    
+
     if(!tour){
         res.status(404).json({
             status:'success',
