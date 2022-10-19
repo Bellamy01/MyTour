@@ -1,6 +1,6 @@
 const express = require('express');
 const fs = require('fs');
-
+let id;
 const app = express();
 
 app.use(express.json());   
@@ -20,15 +20,24 @@ app.get('/api/v1/tours',(req,res)=>{
 
 })
 
+app.get(`/api/v1/tours/${id}`,(req,res)=>{
+    if(req.params.id == tours.map(el=>el.id)){
+        
+    }
+})
+
 app.post('/api/v1/tours',(req,res)=>{
     const newId = tours[tours.length-1].id +1;
     const newTour = Object.assign({id:newId},req.body);
 
     tours.push(newTour);
-    fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`,tours,"utf-8",err=>{
-        if(err){
-            res.send(err.message);
-        }
+    fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`,JSON.stringify(tours),err=>{
+        res.status(201).json({
+            status:'success',
+            data:{
+                tours : newTour
+            }
+        })
     })
 
     res.send(newTour);
