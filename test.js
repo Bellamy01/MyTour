@@ -55,6 +55,15 @@ app.post('/api/v1/tours',(req,res)=>{
     res.send(newTour);
 });
 
+app.patch('/api/v1/tours/:id',(req,res)=>{
+    res.status(200).json({
+        status:'success',
+        data:{
+            tour: '<Updated tour...'
+        }
+    })
+})
+
 const port = 3000;
 app.listen(port,()=>{
     console.log(`Listening on port ${port}...`);
