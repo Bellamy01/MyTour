@@ -20,10 +20,22 @@ app.get('/api/v1/tours',(req,res)=>{
 
 })
 
-app.get(`/api/v1/tours/${id}`,(req,res)=>{
-    if(req.params.id == tours.map(el=>el.id)){
-        
+app.get(`/api/v1/tours/:id`,(req,res)=>{
+    const id = parseInt(req.params.id);
+
+    if(id>tours.length){
+        return res.status(404).json({
+            status:'failure',
+            message:'Invalid ID'
+        })
     }
+    const tour = tours.find(el=>el.id == req.params.id);
+    res.status(200).json({
+        status:'success',
+        data:{
+            tour
+        }
+    })
 })
 
 app.post('/api/v1/tours',(req,res)=>{
