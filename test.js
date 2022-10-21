@@ -4,7 +4,10 @@ let id;
 const app = express();
 
 app.use(express.json());   
-
+app.use((req,res,next)=>{
+    console.log('Hello people from the backend...');
+    next();
+})
 const tours = JSON.parse(
     fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`,"utf-8")
 );
@@ -37,12 +40,9 @@ const getTour = (req,res)=>{
             tour
         }
     });
-}
-app.get('/api/v1/tours',getAllTours);
+};
 
-app.get(`/api/v1/tours/:id`,getTour);
-
-app.post('/api/v1/tours',(req,res)=>{
+const createTour = (req,res)=>{
     const newId = tours[tours.length-1].id +1;
     const newTour = Object.assign({id:newId},req.body);
 
@@ -53,13 +53,13 @@ app.post('/api/v1/tours',(req,res)=>{
             data:{
                 tours : newTour
             }
-        })
-    })
+        });
+    });
 
     res.send(newTour);
-});
+};
 
-app.patch('/api/v1/tours/:id',(req,res)=>{
+const updateTour = (req,res)=>{
     const id = parseInt(req.params.id);
     const tour = tours.find(el=>el.id == req.params.id);
 
@@ -75,10 +75,10 @@ app.patch('/api/v1/tours/:id',(req,res)=>{
         data:{
             tour: '<Updated tour...>'
         }
-    })
-});
+    });
+};
 
-app.delete('/api/v1/tours/:id',(req,res)=>{
+const deleteTour = (req,res)=>{
     const id = parseInt(req.params.id);
     const tour = tours.find(el=>el.id == req.params.id);
 
@@ -92,9 +92,20 @@ app.delete('/api/v1/tours/:id',(req,res)=>{
         status:'success',
         data:null
     })
-});
+};
 
-const port = 3000;
+app
+    .route('/api/v1/tours')
+    .get(getAllTours)
+    .post(createTour);
+
+app
+    .route('/api/v1/tours/:id')
+    .get(getTour)
+    .patch(updateTour)
+    .delete(deleteTour);
+
+    const port = 3000;
 app.listen(port,()=>{
     console.log(`Listening on port ${port}...`);
 })
