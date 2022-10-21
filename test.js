@@ -104,6 +104,10 @@ const deleteTour = (req,res)=>{
         data:null
     })
 };
+
+const getAllUsers = (req,res)=>{
+    const users
+}
 //3)ROUTES
 app
     .route('/api/v1/tours')
@@ -115,6 +119,17 @@ app
     .get(getTour)
     .patch(updateTour)
     .delete(deleteTour);
+
+app
+    .route('/api/v1/tours')
+    .get(getAllUsers)
+    .post(createUser);
+
+app
+    .route('/api/v1/users/:id')
+    .get(getuser)
+    .patch(updateUser)
+    .delete(deleteUser);
 
 //4)START SERVER
     const port = 3000;
