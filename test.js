@@ -1,6 +1,5 @@
 const express = require('express');
 const fs = require('fs');
-let id;
 const app = express();
 
 app.use(express.json());  
