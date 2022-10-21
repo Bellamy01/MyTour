@@ -25,6 +25,7 @@ const getAllTours = (req,res)=>{
 }
 
 const getTour = (req,res)=>{
+    console.log(req.params);
     const id = parseInt(req.params.id);
     const tour = tours.find(el=>el.id == req.params.id);
 
