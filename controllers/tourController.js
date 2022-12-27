@@ -22,11 +22,20 @@ exports.createTour = async (req, res) => {
 exports.getAllTours = async (req, res) => {
   try {
     //build the query
+    //1) filtering
     const queryObj = { ...req.query };
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach((el) => delete queryObj[el]);
+
+    //2) Advanced filtering
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    console.log(JSON.parse(queryStr));
+    let query = JSON.parse(queryStr);
+    //b is for matching only the world specified in the query
+
     //query
-    const query = await Tour.find(queryObj);
+    query = await Tour.find(query);
     //execute the query
     const tours = await query;
     //send response
