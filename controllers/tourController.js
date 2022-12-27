@@ -36,24 +36,43 @@ exports.getAllTours = async (req, res) => {
     });
   }
 };
-exports.getTour = (req, res) => {
-  /* const tour = tours.find((el) => el.id == req.params.id);
-  const id = parseInt(req.params.id);
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour,
-    },
-  }); */
+exports.getTour = async (req, res) => {
+  try {
+    const tour = await Tour.findById(req.params.id);
+    //Tour.findOne({_id:req.params.id})
+    res.status(200).json({
+      status: 'success',
+      requestedAt: req.requestTime,
+      data: {
+        tour,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err,
+    });
+  }
 };
 
-exports.updateTour = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour: '<Updated tour...>',
-    },
-  });
+exports.updateTour = async (req, res) => {
+  try {
+    const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err,
+    });
+  }
 };
 
 exports.deleteTour = (req, res) => {
