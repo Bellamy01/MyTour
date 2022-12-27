@@ -20,11 +20,6 @@ app.use((req, res, next) => {
   console.log('Request Sent Succesfully...');
   next();
 });
-app.use((req, res, next) => {
-  req.requestTime = new Date().toISOString();
-  console.log(req.requestTime);
-  next();
-});
 //3)ROUTES
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
