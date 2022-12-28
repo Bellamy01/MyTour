@@ -2,12 +2,15 @@ const express = require('express');
 
 const router = express.Router();
 const {
+  aliasTop5Tours,
   getAllTours,
   createTour,
   getTour,
   updateTour,
   deleteTour,
 } = require('../controllers/tourController');
+
+router.route('/top-5-cheap').get(aliasTop5Tours, getAllTours);
 
 router.route('/').get(getAllTours).post(createTour);
 
