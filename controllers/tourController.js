@@ -33,7 +33,6 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
   //send response
   res.status(200).json({
     status: 'success',
-    requestedAt: req.requestTime,
     results: tours.length,
     data: {
       tours,
@@ -51,7 +50,6 @@ exports.getTour = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    requestedAt: req.requestTime,
     data: {
       tour,
     },
