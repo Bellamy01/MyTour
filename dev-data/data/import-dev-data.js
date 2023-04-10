@@ -9,9 +9,7 @@ dotenv.config({ path: './config.env' });
 console.log(process.argv[2]);
 
 // READ JSON FILE
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8')
-);
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8'));
 
 const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
@@ -20,8 +18,8 @@ const DB = process.env.DATABASE.replace(
 //IMPORT DATA INTO THE DB
 const importData = async () => {
   try {
-    console.log('Data successfully loaded...');
     await Tour.create(tours);
+    console.log('Data successfully loaded...');
   } catch (err) {
     console.log(err);
   }
@@ -30,8 +28,8 @@ const importData = async () => {
 
 const deleteData = async () => {
   try {
-    console.log('Data successfully deleted...');
     await Tour.deleteMany();
+    console.log('Data successfully deleted...');
   } catch (err) {
     console.log(err);
   }
