@@ -2,19 +2,29 @@
 const fs = require('fs');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const path = require('path');
 const Tour = require('../../models/tourModel');
 
 dotenv.config({ path: './config.env' });
 
 console.log(process.argv[2]);
 
-// READ JSON FILE
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8'));
-
 const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD
 );
+
+mongoose
+  .connect(DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  })
+  .then(() => console.log('DB connection successful!'));
+// READ JSON FILE
+const filePath = path.join(__dirname, 'tours.json');
+const tours = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 //IMPORT DATA INTO THE DB
 const importData = async () => {
   try {
@@ -23,36 +33,21 @@ const importData = async () => {
   } catch (err) {
     console.log(err);
   }
+  process.exit();
 };
 //DELETE ALL DATA FROM DB
 
 const deleteData = async () => {
   try {
-    await Tour.deleteMany();
+    await Tour.deleteMany({});
     console.log('Data successfully deleted...');
   } catch (err) {
     console.log(err);
   }
-};
-//using compass
-const connectDB = async () => {
-  await mongoose
-    .connect(DB, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-    })
-    .then(() => console.log('DB connection successful!'));
-};
-const run = async () => {
-  await connectDB();
-  if (process.argv[2] === '--import') {
-    importData();
-  } else if (process.argv[2] === '--delete') {
-    deleteData();
-  }
   process.exit();
 };
-
-run();
+if (process.argv[2] === '--import') {
+  importData();
+} else if (process.argv[2] === '--delete') {
+  deleteData();
+}
