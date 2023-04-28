@@ -53,6 +53,7 @@ exports.getUser = (req, res) => {
     message: 'The route is not yet defined',
   });
 };
+
 exports.getAllUsers = catchAsync(async (req, res) => {
   const users = await User.find();
   res.status(200).json({
@@ -63,7 +64,13 @@ exports.getAllUsers = catchAsync(async (req, res) => {
     },
   });
 });
-exports.createUser = factory.createOne(User);
+
+exports.createUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'The route is not defined. Go to signup route!',
+  });
+};
 
 exports.updateUser = factory.updateOne(User);
 

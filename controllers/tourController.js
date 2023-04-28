@@ -12,8 +12,6 @@ exports.aliasTop5Tours = (req, res, next) => {
   next();
 };
 
-exports.createTour = factory.createOne(Tour);
-
 exports.getAllTours = catchAsync(async (req, res, next) => {
   //execute the query
   const features = new APIFeatures(Tour.find(), req.query)
@@ -47,10 +45,6 @@ exports.getTour = catchAsync(async (req, res, next) => {
     },
   });
 });
-
-exports.updateTour = factory.updateOne(Tour);
-
-exports.deleteTour = factory.deleteOne(Tour);
 
 exports.getTourStats = catchAsync(async (req, res, next) => {
   const stats = await Tour.aggregate([
@@ -128,3 +122,9 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.createTour = factory.createOne(Tour);
+
+exports.updateTour = factory.updateOne(Tour);
+
+exports.deleteTour = factory.deleteOne(Tour);
