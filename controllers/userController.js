@@ -47,30 +47,16 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'The route is not yet defined',
-  });
-};
-
-exports.getAllUsers = catchAsync(async (req, res) => {
-  const users = await User.find();
-  res.status(200).json({
-    status: 'success',
-    results: users.length,
-    data: {
-      users,
-    },
-  });
-});
-
 exports.createUser = (req, res) => {
   res.status(500).json({
     status: 'error',
-    message: 'The route is not defined. Go to signup route!',
+    message: 'The route is not defined. Please use /signup instead!',
   });
 };
+
+exports.getAllUsers = factory.getAll(User);
+
+exports.getUser = factory.getOne(User);
 
 exports.updateUser = factory.updateOne(User);
 

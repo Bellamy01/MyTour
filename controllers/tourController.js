@@ -1,8 +1,5 @@
-/* eslint-disable node/no-unsupported-features/es-syntax */
 const Tour = require('../models/tourModel');
-const APIFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
 const factory = require('./handlerFactory');
 
 exports.aliasTop5Tours = (req, res, next) => {
@@ -12,39 +9,7 @@ exports.aliasTop5Tours = (req, res, next) => {
   next();
 };
 
-exports.getAllTours = catchAsync(async (req, res, next) => {
-  //execute the query
-  const features = new APIFeatures(Tour.find(), req.query)
-    .filter()
-    .sorting()
-    .limitFields()
-    .paginate();
-  const tours = await features.query;
-  //send response
-  res.status(200).json({
-    status: 'success',
-    results: tours.length,
-    data: {
-      tours,
-    },
-  });
-});
-
-exports.getTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id).populate('reviews');
-  //Tour.findOne({_id:req.params.id})
-
-  if (!tour) {
-    return next(new AppError('Tour Not Found', 404));
-  }
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour,
-    },
-  });
-});
+exports.getAllTours = factory.getAll(Tour);
 
 exports.getTourStats = catchAsync(async (req, res, next) => {
   const stats = await Tour.aggregate([
@@ -122,6 +87,8 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.getTour = factory.getOne(Tour, { path: 'reviews' });
 
 exports.createTour = factory.createOne(Tour);
 
