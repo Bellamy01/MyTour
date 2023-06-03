@@ -8,6 +8,7 @@ const {
   getTourStats,
   createTour,
   getTour,
+  getToursWithin,
   updateTour,
   deleteTour,
 } = require('../controllers/tourController');
@@ -19,6 +20,10 @@ const router = express.Router();
 router.use('/:tourId/reviews', reviewRouter);
 
 router.route('/top-5-cheap').get(aliasTop5Tours, getAllTours);
+
+router
+  .route('/tours-within/:distance/center/:latlong/unit/:unit')
+  .get(getToursWithin);
 
 router
   .route('/get-monthly-plan/:year')
