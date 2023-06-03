@@ -11,6 +11,7 @@ const {
   getToursWithin,
   updateTour,
   deleteTour,
+  getDistances,
 } = require('../controllers/tourController');
 
 const reviewRouter = require('./reviewRoutes');
@@ -24,6 +25,8 @@ router.route('/top-5-cheap').get(aliasTop5Tours, getAllTours);
 router
   .route('/tours-within/:distance/center/:latlong/unit/:unit')
   .get(getToursWithin);
+
+router.route('/distances/:latlong/unit/:unit').get(getDistances);
 
 router
   .route('/get-monthly-plan/:year')
