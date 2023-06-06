@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+//const Honeybadger = require('@honeybadger-io/js');
 
 //Utils and Controllers
 const AppError = require('./utils/appError');
@@ -19,7 +20,13 @@ const reviewRouter = require('./routers/reviewRoutes');
 
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
 //1) MIDDLEWARES
+
+//serving static files
+app.use(express.static(path.join('__dirname', 'public')));
 
 //security http headers
 app.use(helmet());
@@ -61,10 +68,20 @@ app.use(mongoSanitize());
 //Data sanitization against cross-site scripting attacks(XSS)
 app.use(xss());
 
-//serving static files
-app.use(express.static(`${__dirname}/public`));
+//APIS
+/* 
+Honeybadger.configure({
+  apiKey: 'hbp_tTICQKgGcgc4e8p4nDf3Cchd2TizE80Wn0MC',
+  environment: 'production',
+});
 
+Honeybadger.notify('Testing Honeybadger!'); 
+*/
 //3)ROUTES
+app.get('/', (req, res) => {
+  res.status(200).render('base');
+});
+
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
