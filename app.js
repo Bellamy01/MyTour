@@ -26,7 +26,7 @@ app.set('views', path.join(__dirname, 'views'));
 //1) MIDDLEWARES
 
 //serving static files
-app.use(express.static(path.join('__dirname', 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 //security http headers
 app.use(helmet());
@@ -79,7 +79,10 @@ Honeybadger.notify('Testing Honeybadger!');
 */
 //3)ROUTES
 app.get('/', (req, res) => {
-  res.status(200).render('base');
+  res.status(200).render('base', {
+    tour: 'The Forest Hiker',
+    user: 'Jonas',
+  });
 });
 
 app.use('/api/v1/tours', tourRouter);

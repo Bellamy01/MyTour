@@ -1,1 +1,13 @@
-h1 The Park Camper 
+doctype html 
+html
+  head
+    title My Tour 
+    link(rel="shortcut icon", href="./img/fav.png", type="image/png")
+    link(rel='stylesheet', href='css/style.css')
+  body
+    h1 Welcome to My Tour
+    h2 Tihs is the #{tour.toUpperCase()}
+    - const x = 5
+    p The price of this tour is #{x} $
+    p Follow for more content
+    p= user 
