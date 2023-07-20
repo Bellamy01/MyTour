@@ -17,6 +17,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routers/tourRoutes');
 const userRouter = require('./routers/userRoutes');
 const reviewRouter = require('./routers/reviewRoutes');
+const viewRouter = require('./routers/viewRoutes');
 
 const app = express();
 
@@ -78,26 +79,7 @@ Honeybadger.configure({
 Honeybadger.notify('Testing Honeybadger!'); 
 */
 //3)ROUTES
-app.get('/', (req, res) => {
-  res.status(200).render('base', {
-    tour: 'The Forest Hiker',
-    user: 'Jonas',
-    title: 'Exciting tours for adventurous people',
-  });
-});
-
-app.get('/overview', (req, res) => {
-  res.status(200).render('overview', {
-    title: 'All Tours',
-  });
-});
-
-app.get('/tour', (req, res) => {
-  res.status(200).render('tour', {
-    title: 'The Forest Hiker',
-  });
-});
-
+app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
