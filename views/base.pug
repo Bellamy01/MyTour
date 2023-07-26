@@ -1,14 +1,15 @@
 doctype html 
-html
+html(lang="en")
   head
     block head 
-      title Natours | #{title}
+      title MyTour | #{title}
       link(rel="shortcut icon", href="/img/fav.png", type="image/png")
       link(rel='stylesheet', href='/css/style.css')
 
       meta(charset="UTF-8")
       meta(name="viewport" content="width=device-width, initial-scale=1.0")
       link(href="https://fonts.googleapis.com/css?family=Lato:300,300i,700" rel="stylesheet")
+
   body
     //HEADER
     include _header
@@ -20,4 +21,6 @@ html
   //FOOTER
   include _footer
 
-  script(src='js/mapbox.js')
+  //script(src='/js/mapbox.js')
+  script(src="https://unpkg.com/axios/dist/axios.min.js") 
+  script(src='/js/login.js')
